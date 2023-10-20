@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,7 @@ public class TaskController {
     TaskService service;
 
     @Autowired
-    MessageSource messageSource;
+    MessageSource message;
 
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal OAuth2User user){
@@ -33,21 +32,12 @@ public class TaskController {
         model.addAttribute("username", user.getAttribute("name"));
         model.addAttribute("tasks", service.findAll());
         return "task/index";
-    } 
-    
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirect){
-        if (service.delete(id)){
-            redirect.addFlashAttribute("success", getMessage("task.delete.success") );
-        }else{
-            redirect.addFlashAttribute("error", getMessage("task.notfound"));
-        }
-        return "redirect:/task";
     }
 
-    @DeleteMapping
-    public String deleteobject(Task task){
-        System.out.println(task);
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes redirect){
+        service.delete(id);
+        redirect.addFlashAttribute("success", message.getMessage("task.delete.success", null, LocaleContextHolder.getLocale()));
         return "redirect:/task";
     }
 
@@ -57,16 +47,11 @@ public class TaskController {
     }
 
     @PostMapping
-    public String save(@Valid Task task, BindingResult result, RedirectAttributes redirect){
-        if (result.hasErrors()) return "/task/form";
-
-        service.save(task);
-        redirect.addFlashAttribute("success", getMessage("task.create.success"));
+    public String create(@Valid Task task, BindingResult result , RedirectAttributes redirect){
+        if (result.hasErrors()) return "task/form";
+        service.create(task);
+        redirect.addFlashAttribute("success", "Tarefa cadastrada com sucesso");
         return "redirect:/task";
-    }
-
-    private String getMessage(String code){
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
     
 }

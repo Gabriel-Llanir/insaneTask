@@ -7,14 +7,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
 public class LocaleConfig {
-
+    
     @Bean
-    public MessageSource messageSource(){
+    MessageSource messageSource(){
         var messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("lang/messages");
+        messageSource.addBasenames("lang/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
-   
 }

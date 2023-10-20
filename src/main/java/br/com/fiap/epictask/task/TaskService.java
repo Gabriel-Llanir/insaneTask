@@ -11,21 +11,17 @@ public class TaskService {
     @Autowired
     TaskRepository repository;
 
-    public List<Task> findAll(){
+    public List<Task> findAll() {
         return repository.findAll();
     }
 
-    public boolean delete(Long id) {
-        var task = repository.findById(id);
-
-        if(task.isEmpty()) return false;
-
+    public void delete(Long id) {
         repository.deleteById(id);
-        return true;
     }
 
-    public void save(Task task) {
+    public void create(Task task) {
         repository.save(task);
     }
+
     
 }

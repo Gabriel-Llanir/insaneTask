@@ -1,31 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
+    <title>Epic Task</title>
 </head>
 
 <body class="grey lighten-2">
-
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo">EpicTask</a>
+            <a href="#" class="brand-logo">Epic Task</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li class="active"><a href="/task" th:text="#{task.pending}"></a></li>
                 <li><a href="#" th:text="#{task.done}"></a></li>
-                <li><a href="#" th:text="#{users}"></a></li>
+                <li><a href="#" th:text="#{user.profile}"></a></li>
                 <li>
                     <!-- Dropdown Trigger -->
                     <a class='dropdown-trigger' href='#' data-target='dropdown1'>
-                        <img class="avatar" th:src="${avatar_url}" alt="">
+                        <img th:src="${avatar_url}" alt="" class="avatar">
                     </a>
-
                     <!-- Dropdown Structure -->
                     <ul id='dropdown1' class='dropdown-content'>
                         <li><span th:text="${username}"></span></li>
@@ -38,17 +36,16 @@
     </nav>
 
     <main class="container">
-        <span class="card-panel teal accent-3" th:if="${success}" th:text="${success}"></span>
-        <span class="card-panel red accent-3 white-text" th:if="${error}" th:text="${error}"></span>
+        <div class="card-panel green" th:if="${success}" th:text="${success}"></div>
 
         <h2>Tarefas Pendentes</h2>
 
         <div class="row">
-            <div class="col s12 m6 l4" th:each="task : ${tasks}">
+            <div class="col s12 m6" th:each="task : ${tasks}">
                 <div class="card">
                     <div class="card-content">
                         <div class="progress">
-                            <div class="determinate" th:style="${'width:' + task.status + '%'}"></div>
+                            <div class="determinate" style="width: 70%"></div>
                         </div>
                         <span class="card-title" th:text="${task.title}"></span>
                         <p th:text="${task.description}"></p>
@@ -63,26 +60,26 @@
             </div>
         </div>
 
-        <div class="fixed-action-btn">
-            <a href="/task/new" class="btn-floating btn-large blue">
-                <i class="large material-icons">add</i>
-            </a>
-        </div>
-
     </main>
+
+    <div class="fixed-action-btn">
+        <a href="/task/new" class="btn-floating btn-large red">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            const options = {
+                constrainWidth: false,
+                coverTrigger: false
+            }
+            var instances = M.Dropdown.init(elems, options);
+        });
+    </script>
 
 
 </body>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.dropdown-trigger');
-        const options = {
-            coverTrigger: false,
-            constrainWidth: false
-        }
-        var instances = M.Dropdown.init(elems, options);
-    });
-</script>
 
 </html>

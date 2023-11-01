@@ -1,4 +1,4 @@
-package br.com.fiap.epictask.config;
+package br.com.fiap.insanetask.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
